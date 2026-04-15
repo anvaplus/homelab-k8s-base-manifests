@@ -1,0 +1,9 @@
+apiVersion: v2
+description: Helm chart used for Hugo static websites
+name: chart-hugo
+type: application
+version: 0.1.0
+dependencies:
+  - name: homelab-template-hugo
+    version: 0.1.0
+    repository: file://../../../../templates/microservices-template/template-hugo/v0.1.0

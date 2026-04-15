@@ -1,0 +1,5 @@
+apiVersion: v2
+name: homelab-template-hugo
+description: A Helm chart template for Hugo static websites
+type: library
+version: 0.1.0

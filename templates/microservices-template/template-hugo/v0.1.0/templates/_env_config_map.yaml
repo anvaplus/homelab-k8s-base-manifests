@@ -1,0 +1,15 @@
+{{- define "homelab.env-configmap-hugo" -}}
+{{- if .Values.envConf }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.componentName }}-env-conf
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "homelab.labels-hugo" . | nindent 4 }}
+data:
+{{- range $key, $val := .Values.envConf }}
+  {{ $key }}: {{ $val | toString | quote }}
+{{- end }}
+{{- end }}
+{{- end -}}

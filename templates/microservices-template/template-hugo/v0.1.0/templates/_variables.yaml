@@ -1,0 +1,6 @@
+{{- define "homelab.imageName-hugo" -}}
+{{- $repo := required "image.repository is required (Docker Hub repository, e.g. anvaplus/personal-blog)" .Values.image.repository -}}
+{{- $baseUrl := .Values.image.baseUrl | default "docker.io" -}}
+{{- $version := required "version is required (for example v0.1.0-alpha.1)" .Values.version -}}
+{{ printf "%s/%s:%s" $baseUrl $repo $version }}
+{{- end -}}

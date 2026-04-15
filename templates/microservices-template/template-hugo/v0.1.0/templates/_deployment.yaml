@@ -1,0 +1,51 @@
+{{- define "homelab.deployment-hugo" -}}
+{{- $serviceTargetPort := 1313 -}}
+{{- with .Values.service }}
+{{- $serviceTargetPort = (.targetPort | default 1313) -}}
+{{- end }}
+{{- $envSecrets := dict -}}
+{{- with .Values.externalSecretsConfig }}
+{{- $envSecrets = (.envSecrets | default dict) -}}
+{{- end }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.componentName }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "homelab.labels-hugo" . | nindent 4 }}
+spec:
+  replicas: {{ (.Values.deployment).spec.replicas | default 1 }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Values.componentName }}
+      app.kubernetes.io/part-of: {{ .Values.appName }}
+  template:
+    metadata:
+      labels:
+        {{- include "homelab.labels-hugo" . | nindent 8 }}
+    spec:
+      containers:
+        - name: {{ .Values.componentName }}
+          image: {{ include "homelab.imageName-hugo" . }}
+          imagePullPolicy: {{ .Values.image.pullPolicy | default "IfNotPresent" }}
+          ports:
+            - name: http
+              containerPort: {{ $serviceTargetPort }}
+              protocol: TCP
+          {{- include "homelab.readiness-probe-hugo" . | nindent 10 }}
+          {{- include "homelab.liveness-probe-hugo" . | nindent 10 }}
+          resources:
+            {{- toYaml (.Values.resources | default (dict)) | nindent 12 }}
+          {{- if or .Values.envConf (gt (len $envSecrets) 0) }}
+          envFrom:
+            {{- if .Values.envConf }}
+            - configMapRef:
+                name: {{ .Values.componentName }}-env-conf
+            {{- end }}
+            {{- if gt (len $envSecrets) 0 }}
+            - secretRef:
+                name: {{ .Values.componentName }}-env-extsec
+            {{- end }}
+          {{- end }}
+{{- end -}}

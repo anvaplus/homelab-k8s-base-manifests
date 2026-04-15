@@ -1,0 +1,34 @@
+appName: my-site
+componentName: hugo
+namespace: web
+
+environment: dev
+
+deployment:
+  spec:
+    replicas: 1
+
+image:
+  repository: anvaplus/hugo-blog-example
+  pullPolicy: IfNotPresent
+
+externalSecretsConfig:
+  refreshInterval: 24h
+  secretStoreName: op-cluster-secret-store
+  envSecrets: {}
+
+envConf:
+  HUGO_ENVIRONMENT: production
+  HUGO_BASEURL: https://blog.example.local/
+  HUGO_TITLE: My Hugo Blog
+  HUGO_ENABLEGITINFO: "true"
+  HUGO_ENABLEROBOTSTXT: "true"
+  HUGO_DEFAULTCONTENTLANGUAGE: en
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 300m
+    memory: 256Mi

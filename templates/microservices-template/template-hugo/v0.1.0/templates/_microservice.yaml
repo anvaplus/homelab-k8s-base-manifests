@@ -1,0 +1,14 @@
+{{ required "appName is required" .Values.appName }}
+{{ required "componentName is required" .Values.componentName }}
+{{ required "namespace is required" .Values.namespace }}
+
+{{ define "homelab.microservice-hugo" }}
+---
+{{ include "homelab.deployment-hugo" . }}
+---
+{{ include "homelab.service-hugo" . }}
+---
+{{ include "homelab.env-configmap-hugo" . }}
+---
+{{ include "homelab.env-extsec-hugo" . }}
+{{ end }}

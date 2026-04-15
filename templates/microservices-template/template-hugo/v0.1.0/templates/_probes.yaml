@@ -1,0 +1,51 @@
+{{ define "homelab.readiness-probe-hugo" -}}
+{{- with .Values.probe }}
+readinessProbe:
+  httpGet:
+    path: {{ .readinessProbe.path | default "/" }}
+    port: {{ .readinessProbe.port | default "http" }}
+    scheme: {{ .readinessProbe.scheme | default "HTTP" }}
+  initialDelaySeconds: {{ .readinessProbe.initialDelaySeconds | default 5 }}
+  timeoutSeconds: {{ .readinessProbe.timeoutSeconds | default 5 }}
+  periodSeconds: {{ .readinessProbe.periodSeconds | default 10 }}
+  successThreshold: 1
+  failureThreshold: {{ .readinessProbe.failureThreshold | default 3 }}
+{{- else }}
+readinessProbe:
+  httpGet:
+    path: /
+    port: http
+    scheme: HTTP
+  initialDelaySeconds: 5
+  timeoutSeconds: 5
+  periodSeconds: 10
+  successThreshold: 1
+  failureThreshold: 3
+{{- end -}}
+{{- end -}}
+
+{{ define "homelab.liveness-probe-hugo" -}}
+{{- with .Values.probe }}
+livenessProbe:
+  httpGet:
+    path: {{ .livenessProbe.path | default "/" }}
+    port: {{ .livenessProbe.port | default "http" }}
+    scheme: {{ .livenessProbe.scheme | default "HTTP" }}
+  initialDelaySeconds: {{ .livenessProbe.initialDelaySeconds | default 10 }}
+  timeoutSeconds: {{ .livenessProbe.timeoutSeconds | default 5 }}
+  periodSeconds: {{ .livenessProbe.periodSeconds | default 10 }}
+  successThreshold: 1
+  failureThreshold: {{ .livenessProbe.failureThreshold | default 3 }}
+{{- else }}
+livenessProbe:
+  httpGet:
+    path: /
+    port: http
+    scheme: HTTP
+  initialDelaySeconds: 10
+  timeoutSeconds: 5
+  periodSeconds: 10
+  successThreshold: 1
+  failureThreshold: 3
+{{- end -}}
+{{- end -}}

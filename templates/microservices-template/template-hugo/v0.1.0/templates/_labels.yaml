@@ -1,0 +1,6 @@
+{{ define "homelab.labels-hugo" -}}
+app.kubernetes.io/name: {{ .Values.componentName }}
+app.kubernetes.io/component: web
+app.kubernetes.io/part-of: {{ .Values.appName }}
+app.kubernetes.io/managed-by: Helm
+{{- end -}}

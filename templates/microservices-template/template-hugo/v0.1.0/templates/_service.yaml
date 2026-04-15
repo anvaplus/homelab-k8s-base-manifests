@@ -1,0 +1,27 @@
+{{ define "homelab.service-hugo" }}
+{{- $serviceType := "ClusterIP" -}}
+{{- $servicePort := 80 -}}
+{{- $serviceTargetPort := 1313 -}}
+{{- with .Values.service }}
+{{- $serviceType = (.type | default "ClusterIP") -}}
+{{- $servicePort = (.port | default 80) -}}
+{{- $serviceTargetPort = (.targetPort | default 1313) -}}
+{{- end }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.componentName }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "homelab.labels-hugo" . | nindent 4 }}
+spec:
+  type: {{ $serviceType }}
+  ports:
+    - name: http
+      port: {{ $servicePort }}
+      targetPort: {{ $serviceTargetPort }}
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: {{ .Values.componentName }}
+    app.kubernetes.io/part-of: {{ .Values.appName }}
+{{ end }}
