@@ -1,7 +1,7 @@
 {{- define "homelab.deployment-hugo" -}}
-{{- $serviceTargetPort := 1313 -}}
+{{- $serviceTargetPort := 8080 -}}
 {{- with .Values.service }}
-{{- $serviceTargetPort = (.targetPort | default 1313) -}}
+{{- $serviceTargetPort = (.targetPort | default 8080) -}}
 {{- end }}
 {{- $envSecrets := dict -}}
 {{- with .Values.externalSecretsConfig }}

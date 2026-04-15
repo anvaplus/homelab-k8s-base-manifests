@@ -2,7 +2,7 @@
 {{- with .Values.probe }}
 readinessProbe:
   httpGet:
-    path: {{ .readinessProbe.path | default "/" }}
+    path: {{ .readinessProbe.path | default "/healthz" }}
     port: {{ .readinessProbe.port | default "http" }}
     scheme: {{ .readinessProbe.scheme | default "HTTP" }}
   initialDelaySeconds: {{ .readinessProbe.initialDelaySeconds | default 5 }}
@@ -13,7 +13,7 @@ readinessProbe:
 {{- else }}
 readinessProbe:
   httpGet:
-    path: /
+    path: /healthz
     port: http
     scheme: HTTP
   initialDelaySeconds: 5
@@ -28,7 +28,7 @@ readinessProbe:
 {{- with .Values.probe }}
 livenessProbe:
   httpGet:
-    path: {{ .livenessProbe.path | default "/" }}
+    path: {{ .livenessProbe.path | default "/healthz" }}
     port: {{ .livenessProbe.port | default "http" }}
     scheme: {{ .livenessProbe.scheme | default "HTTP" }}
   initialDelaySeconds: {{ .livenessProbe.initialDelaySeconds | default 10 }}
@@ -39,7 +39,7 @@ livenessProbe:
 {{- else }}
 livenessProbe:
   httpGet:
-    path: /
+    path: /healthz
     port: http
     scheme: HTTP
   initialDelaySeconds: 10

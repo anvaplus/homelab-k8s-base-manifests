@@ -1,11 +1,11 @@
 {{ define "homelab.service-hugo" }}
 {{- $serviceType := "ClusterIP" -}}
 {{- $servicePort := 80 -}}
-{{- $serviceTargetPort := 1313 -}}
+{{- $serviceTargetPort := 8080 -}}
 {{- with .Values.service }}
 {{- $serviceType = (.type | default "ClusterIP") -}}
 {{- $servicePort = (.port | default 80) -}}
-{{- $serviceTargetPort = (.targetPort | default 1313) -}}
+{{- $serviceTargetPort = (.targetPort | default 8080) -}}
 {{- end }}
 apiVersion: v1
 kind: Service
